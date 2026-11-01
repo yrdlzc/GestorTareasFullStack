@@ -65,7 +65,7 @@ async function editarTarea(
     try {
 
         await fetch(
-            `http://localhost:3000/api/tareas/${id}`,
+            `/api/tareas/${id}`,
             {
                 method: "PUT",
 
@@ -122,7 +122,7 @@ async function eliminarTarea(id) {
     try {
 
         await fetch(
-            `http://localhost:3000/api/tareas/${id}`,
+            `/api/tareas/${id}`,
             {
                 method: "DELETE"
             }
@@ -153,7 +153,7 @@ async function cargarTareas() {
 
         const respuesta =
             await fetch(
-                "http://localhost:3000/api/tareas"
+                "/api/tareas"
             );
 
         const tareas =
@@ -276,7 +276,7 @@ formulario.addEventListener(
 
             const respuesta =
                 await fetch(
-                    "http://localhost:3000/api/tareas",
+                    "/api/tareas",
                     {
                         method: "POST",
 

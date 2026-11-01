@@ -3,20 +3,10 @@
  * PROYECTO FULL STACK
  * SISTEMA DE GESTIÓN DE TAREAS
  * ==========================================================
- *
- * Archivo: server.js
- *
- * Descripción:
- * Punto de entrada principal del backend.
- * ==========================================================
  */
 
-/**
- * ----------------------------------------------------------
- * VARIABLES DE ENTORNO
- * ----------------------------------------------------------
- */
 require("dotenv").config();
+
 console.log("PORT =", process.env.PORT);
 console.log("JWT =", process.env.JWT_SECRET);
 console.log("MONGO =", process.env.MONGODB_URI);
@@ -28,6 +18,7 @@ console.log("MONGO =", process.env.MONGODB_URI);
  */
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 /**
  * ----------------------------------------------------------
@@ -41,13 +32,9 @@ const conectarDB = require("./config/db");
  * RUTAS
  * ----------------------------------------------------------
  */
-const tareasRoutes = require(
-    "./routes/tareas.routes"
-);
+const tareasRoutes = require("./routes/tareas.routes");
 
-const authRoutes = require(
-    "./routes/auth.routes"
-);
+const authRoutes = require("./routes/auth.routes");
 
 /**
  * ----------------------------------------------------------
@@ -68,8 +55,7 @@ conectarDB();
  * PUERTO
  * ----------------------------------------------------------
  */
-const PORT =
-    process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 /**
  * ----------------------------------------------------------
@@ -82,20 +68,21 @@ app.use(express.json());
 
 /**
  * ----------------------------------------------------------
- * RUTA PRINCIPAL
+ * ARCHIVOS ESTÁTICOS
  * ----------------------------------------------------------
  */
-app.get("/", (req, res) => {
-
-    res.send(
-        "Servidor del proyecto Full Stack funcionando correctamente."
-    );
-
-});
+app.use(
+    express.static(
+        path.join(
+            __dirname,
+            "../frontend"
+        )
+    )
+);
 
 /**
  * ----------------------------------------------------------
- * RUTAS DE TAREAS
+ * RUTAS API
  * ----------------------------------------------------------
  */
 app.use(
@@ -103,15 +90,26 @@ app.use(
     tareasRoutes
 );
 
-/**
- * ----------------------------------------------------------
- * RUTAS DE AUTENTICACIÓN
- * ----------------------------------------------------------
- */
 app.use(
     "/api/auth",
     authRoutes
 );
+
+/**
+ * ----------------------------------------------------------
+ * RUTA PRINCIPAL
+ * ----------------------------------------------------------
+ */
+app.get("/", (req, res) => {
+
+    res.sendFile(
+        path.join(
+            __dirname,
+            "../frontend/index.html"
+        )
+    );
+
+});
 
 /**
  * ----------------------------------------------------------
